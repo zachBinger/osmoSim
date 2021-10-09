@@ -1,6 +1,7 @@
 import numpy as np
 import itertools
 from itertools import permutations
+import matplotlib.pyplot as plt
 
 class crossFlow:
     def __init__(self, props):
@@ -19,7 +20,10 @@ class crossFlow:
         self.domain = dict.fromkeys(domain,initDict)
 
     def iterate(self):
-        for i in range(self.properties["zones"]):
-            for j in range(self.properties["zones"]):
+        for i in range(1,self.properties["zones"]):
+            for j in range(1,self.properties["zones"]):
                 self.properties["solver"](self,[i,j])
                 
+
+    def visualize(self, char):
+        plt.imshow(self.domain[char])
