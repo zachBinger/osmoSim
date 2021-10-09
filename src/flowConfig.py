@@ -1,7 +1,6 @@
 import numpy as np
 import itertools
 from itertools import permutations
-from transport import FOeqns as solver
 
 class crossFlow:
     def __init__(self, props):
@@ -10,14 +9,17 @@ class crossFlow:
 
     def initialize(self, chars):
         domain = []
+        initDict = chars
+        # nested for loop for creating the coordinate tuples of the discretized domain ex.[(0,0),(0,1),(1,0)]
         for i in range(self.properties["zones"]):
             for j in range(self.properties["zones"]):
                 domain.append((i,j))
 
-        self.domain = dict.fromkeys(domain,dict.fromkeys(chars,0))
+        # initializing all the flow parameters defined in main.py
+        self.domain = dict.fromkeys(domain,initDict)
 
     def iterate(self):
         for i in range(self.properties["zones"]):
             for j in range(self.properties["zones"]):
-                solver(self,[i,j])
+                self.properties["solver"](self,[i,j])
                 
