@@ -13,9 +13,9 @@ module_properties = {
 }
 
 module_chars = {
-    "Feed Flow Rate":    1,  # m3/s
-    "Draw Flow Rate":   1,  # m3/s
-    "Feed Concentration":    1,  # g/L
+    "Feed Flow Rate":       1,  # m3/s
+    "Draw Flow Rate":       1,  # m3/s
+    "Feed Concentration":   1,  # g/L
     "Draw Concentration":   32,  # g/L
 }
 
@@ -23,7 +23,9 @@ module = crossFlow(module_properties)
 module.initialize(module_chars)
 module.iterate()
 
-print(list(module.domain.keys()))
+# print(module.domain)
+
+# print(list(module.domain.keys()))
 
 # a = (list(module.domain.keys()))
 # b,c = zip(*a)

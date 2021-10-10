@@ -1,5 +1,8 @@
+from scipy.optimize import fsolve
+
 def FOeqns(module, zone):
 
-    module.domain[zone[0],zone[1]]["Feed Flow Rate"] = module.domain[zone[0]-1,zone[1]-1]["Feed Flow Rate"] + 1
+    def waterFlux(Jw):
+        return Jw - (module.properties["Water Permeability"]*(1)                    )
 
-    # print(module.domain[zone[0],zone[1]])
+    print(fsolve(waterFlux,0))
