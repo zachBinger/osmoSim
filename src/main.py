@@ -1,34 +1,17 @@
-from flowConfig import crossFlow
-from transport import FOeqns as solver
+from systems import *
 
-module_properties = {
-    "Width":    1,  # m
-    "Length":   1,  # m
-    "zones":    10,  # quantity
-    "Water Permeability":   1,
-    "Salt Permeability":   1,
-    "Defects":   0,
-    "mode":     'FO',
-    "solver":   solver,
-}
+treatment_train = System()
 
-module_chars = {
-    "Feed Flow Rate":       1,  # m3/s
-    "Draw Flow Rate":       1,  # m3/s
-    "Feed Concentration":   1,  # g/L
-    "Draw Concentration":   32,  # g/L
-}
+treatment_train.add(
+    UF(
+    module='hollow_fiber', 
+    models=['surrogate']), 
+    loc='main')
 
-module = crossFlow(module_properties)
-module.initialize(module_chars)
-module.iterate()
+treatment_train.add(FO(module='cross_flow', models=['physics']), loc='main')
+treatment_train.add(RO(module='cross_flow', models=['ROSA']), loc='main')
+treatment_train.add(MD(module='counter_current', models=['physics']), loc='waste')
+treatment_train.add(UV(module='reactor', models='surrogate'), loc='main')
 
-# print(module.domain)
-
-# print(list(module.domain.keys()))
-
-# a = (list(module.domain.keys()))
-# b,c = zip(*a)
-# print(b)
-# print(c)
-# module.visualize()
+treatment_train.simulate()
+treatment_train.report()
