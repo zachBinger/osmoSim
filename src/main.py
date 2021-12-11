@@ -14,4 +14,5 @@ treatment_train.add(MD(module='counter_current', models=['physics']), loc='waste
 treatment_train.add(UV(module='reactor', models='surrogate'), loc='main')
 
 treatment_train.simulate()
+treatment_train.optimize()
 treatment_train.report()

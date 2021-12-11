@@ -14,6 +14,9 @@ class System:
     def simulate(self):
         pass
 
+    def optimize(self):
+        pass
+
     def report(self):
         indent = '      '
         arrow = '|\n'+indent
@@ -59,5 +62,5 @@ class UV:
 
 class UF:
     def __init__(self, module, models):
-        self.name = 'UV'
+        self.name = 'UF'
         pass
