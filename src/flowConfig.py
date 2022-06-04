@@ -13,7 +13,7 @@ class crossFlow:
 
     def initialize(self, chars):
         initDict = chars
-        self.domain =  np.asmatrix(np.array([[chars.copy() for i in range(10)] for i in range(10)]))
+        self.domain =  np.asmatrix(np.array([[chars.copy() for i in range(self.properties["zones"])] for i in range(self.properties["zones"])]))
         # self.domain =  np.array([[chars for i in range(10)] for i in range(10)])
         for x, y in np.ndindex(self.domain.shape):
             self.domain[x,y]['Index'] = (x,y)
@@ -33,8 +33,7 @@ class crossFlow:
             solverAns = 0.1
             self.domain[math.floor(self.properties["zones"]-1),x+1]['Outside Flow Rate'] = self.domain[math.floor(self.properties["zones"]-1),x]['Outside Flow Rate'] - solverAns
         # Flip the values at the baffle turn
-        for idx in range(self.domain[self.properties["zones"]-1,5:].size):
-            # self.domain[int(self.properties["zones"]/2+idx),self.properties["zones"]-1]['Inside Flow Rate'] = self.domain[int(idx),self.properties["zones"]-1]['Inside Flow Rate']
+        for idx in range(self.domain[self.properties["zones"]-1,int(self.properties["zones"]/2):].size):
             self.domain[self.properties["zones"]-1,int(self.properties["zones"]/2+idx)]['Inside Flow Rate'] = self.domain[self.properties["zones"]-1,int(idx)]['Inside Flow Rate']
 
         ## 2nd loop
@@ -64,28 +63,27 @@ class crossFlow:
 
 
 module_properties = {
-    "Width":    1,  # m
-    "Length":   1,  # m
-    "zones":    10,  # quantity
+    "Width":                1,  # m
+    "Length":               1,  # m
+    "zones":                100,  # quantity
     "Water Permeability":   1,
-    "Salt Permeability":   1,
-    "Defects":   0,
-    "mode":     'FO',
+    "Salt Permeability":    1,
+    "Defects":              0,
+    "mode":                 'FO',
     
     # "solver":   solver,
 }
 
 module_chars = {
-    "Index":            (0,0),
-    "Outside Flow Rate":       2,  # m3/s
-    "Inside Flow Rate":       1,  # m3/s
-    "Outside Concentration":   1,  # g/L
-    "Inside Concentration":   32,  # g/L
+    "Index":                (0,0),
+    "Outside Flow Rate":        2,  # m3/s
+    "Inside Flow Rate":         1,  # m3/s
+    "Outside Concentration":    1,  # g/L
+    "Inside Concentration":     32,  # g/L
 }
 
 module = crossFlow(module_properties)
 module.initialize(module_chars)
 module.iterate()
-# print(module.domain)
 module.visualize('Inside','Inside Flow Rate')
 module.visualize('Outside','Outside Flow Rate')
